@@ -103,7 +103,10 @@ ifndef ESP_ROOT
   ESP_ARDUINO_VERSION := $(notdir $(ESP_ROOT))
   # Find used version of compiler and tools
   COMP_PATH := $(lastword $(wildcard $(ARDUINO_ESP_ROOT)/tools/xtensa-*/*))
-  MK_FS_PATH ?= $(lastword $(wildcard $(ARDUINO_ESP_ROOT)/tools/$(MK_FS_MATCH)/*/$(MK_FS_MATCH)))
+  MK_FS_PATH ?= $(lastword \
+  	$(wildcard $(ARDUINO_ESP_ROOT)/tools/$(MK_FS_MATCH)/*/$(MK_FS_MATCH))\
+  	$(wildcard $(ESP_ROOT)/tools/$(MK_FS_MATCH)/*/$(MK_FS_MATCH))\
+	)
   PYTHON3_PATH := $(lastword $(wildcard $(ARDUINO_ESP_ROOT)/tools/python3/*))
 else
   # Location defined, assume that it is a git clone
@@ -144,7 +147,8 @@ endif
 MCU ?= $(CHIP)
 ESPTOOL_FILE = $(firstword $(wildcard $(ESP_ROOT)/tools/esptool/esptool.py) \
                            $(wildcard $(ARDUINO_ESP_ROOT)/tools/esptool_py/*/esptool.py) \
-													 $(ESP_ROOT)/tools/esptool/esptool)
+			   $(wildcard $(ARDUINO_ESP_ROOT)/tools/esptool_py/*/esptool) \
+			 	$(ESP_ROOT)/tools/esptool/esptool)
 ESPTOOL ?= $(if $(NO_PY_WRAP),$(ESPTOOL_FILE),$(PY_WRAP) esptool)
 ESPTOOL_COM ?= $(ESPTOOL) --baud=$(UPLOAD_SPEED) --port $(UPLOAD_PORT) --chip $(MCU)
 ifeq ($(IS_ESP32),)

@@ -59,6 +59,10 @@ $vars{'runtime.os'} = '$(OS)';
 $vars{'build.fqbn'} = 'generic';
 $vars{'_id'} = $board;
 
+$vars{'runtime.tools.esp-x32.path'} = $ard_esp_root . "/tools/esp-x32/2411";
+$vars{'runtime.tools.esp-rv32.path'} = $ard_esp_root . "/tools/esp-rv32/2411";
+$vars{'runtime.tools.esp32-arduino-libs.path'}= $ard_esp_root. "/tools/esp32-arduino-libs/idf-release_v5.4-2f7dcd86-v1";
+
 # Parse the files and define the corresponding variables
 my $board_defined;
 foreach my $fn (@ARGV) {
@@ -98,6 +102,7 @@ $vars{'runtime.tools.xtensa-esp32s3-elf-gcc.path'} ||= "{runtime.platform.path}/
 $vars{'runtime.tools.riscv32-esp-elf-gcc.path'} ||= "{runtime.platform.path}/tools/riscv32-esp-elf";
 $vars{'runtime.tools.xtensa-lx106-elf-gcc.path'} ||= '$(COMP_PATH)';
 $vars{'runtime.tools.python3.path'} ||= '$(PYTHON3_PATH)';
+
 $vars{'upload.resetmethod'} ||= "--before default_reset --after hard_reset";
 
 die "* Unknown board $board\n" unless $board_defined;
