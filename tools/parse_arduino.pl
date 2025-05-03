@@ -119,8 +119,8 @@ $vars{'serial.port'} = '$(UPLOAD_PORT)';
 $vars{'tools.esptool.upload.pattern'} =~ s/\{(cmd|path)\}/\{tools.esptool.$1\}/g;
 $vars{'compiler.cpreprocessor.flags'} .= " \$(C_PRE_PROC_FLAGS)";
 $vars{'build.extra_flags'} .= " \$(BUILD_EXTRA_FLAGS)";
-
 $vars{'tools.esptool.path'} = "\$(dir \$(ESPTOOL_FILE))";
+$vars{'build.memory_type'} = "\$(BUILD_MEMORY_TYPE)";
 # Expand all variables
 foreach my $key (sort keys %vars) {
   while ($vars{$key} =~/\{/) {
@@ -155,6 +155,7 @@ print "LIB_COM=\"$vars{'compiler.path'}$vars{'compiler.ar.cmd'}\" $vars{'compile
 print "CORE_LIB_COM=$vars{'recipe.ar.pattern'}\n";
 print "LD_COM=$vars{'recipe.c.combine.pattern'}\n";
 print "PART_FILE?=$esp_root/tools/partitions/default.csv\n";
+print "BUILD_MEMORY_TYPE?=qio_opi\n";
 $val = $vars{'recipe.objcopy.eep.pattern'} || $vars{'recipe.objcopy.partitions.bin.pattern'};
 $val =~ s/\"([^\"]+\.csv)\"/\$(PART_FILE)/;
 print "GEN_PART_COM=$val\n";
