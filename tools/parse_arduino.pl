@@ -59,9 +59,9 @@ $vars{'runtime.os'} = '$(OS)';
 $vars{'build.fqbn'} = 'generic';
 $vars{'_id'} = $board;
 
-$vars{'runtime.tools.esp-x32.path'} = $ard_esp_root . "/tools/esp-x32/2411";
-$vars{'runtime.tools.esp-rv32.path'} = $ard_esp_root . "/tools/esp-rv32/2411";
-$vars{'runtime.tools.esp32-arduino-libs.path'}= $ard_esp_root. "/tools/esp32-arduino-libs/idf-release_v5.4-2f7dcd86-v1";
+$vars{'runtime.tools.esp-x32.path'} = glob("$ard_esp_root/tools/esp-x32/*");
+$vars{'runtime.tools.esp-rv32.path'} = glob("$ard_esp_root/tools/esp-rv32/*");
+$vars{'runtime.tools.esp32-arduino-libs.path'}= glob("$ard_esp_root/tools/esp32-arduino-libs/*");
 
 # Parse the files and define the corresponding variables
 my $board_defined;
@@ -88,6 +88,7 @@ foreach my $fn (@ARGV) {
     $key =~ s/$board\.menu\.(?:LwIPVariant|ip)\.$lwipvariant\.//;
     $key =~ s/$board\.menu\.PartitionScheme\.[^\.]+\.//;
     $key =~ s/^$board\.//;
+    $val =~ s/.*srmodels.bin//;
     $vars{$key} ||= $val;
     $vars{$1} = $vars{$key} if $key =~ /(.+)\.$os$/;
   }
