@@ -512,7 +512,7 @@ obj_info: $(MAIN_EXE)
 
 # Analyze crash log
 crash: $(MAIN_EXE)
-	perl $(__TOOLS_DIR)/crash_tool.pl $(ESP_ROOT) $(BUILD_DIR)/$(MAIN_NAME).elf
+	perl $(__TOOLS_DIR)/crash_tool.pl $(ARDUINO_ESP_ROOT) $(BUILD_DIR)/$(MAIN_NAME).elf
 
 # Run compiler preprocessor to get full expanded source for a file
 preproc:

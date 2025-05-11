@@ -69,7 +69,7 @@ while (<STDIN>) {
   last if /<<<stack/;
   $reason = "$_$exceptions[$1]" if /Exception \((\d+)\):/;
   $reason = "$1" if /Guru Meditation Error: (.+)/;
-  while (/(40[0-2][0-9a-f]{5})/g) {
+  while (/(0x4[0-3][0-9a-f]{6}:0x[0-9a-f]{8})/g) {
     push(@addr, $1);
   }
   last if /<<<stack|Backtrace:/;
@@ -78,10 +78,12 @@ print "\n";
 print BOLD RED "$reason\n\n";
 print BOLD GREEN "=== Stack trace ===\n\n";
 my $com = "$addr2line -aipfC -e $elf_file_name " . join(" ", @addr);
+print $com . "\n";
 foreach (split(/\n/, `$com`)) {
-  next unless /\S+:\s+(.+) at (\S+)/;
-  print BOLD BLUE $1, "\n";
-  my $path = $2;
+  print $_ . "\n";
+  next unless /((\S+:)|(\s*\(inlined by\)))\s+(.+) at (\S+)/;
+  print BOLD BLUE $4, "\n";
+  my $path = $5;
   $path = ".." . substr($path, -($max_width-4)) if length($path) > $max_width-2;
   print "  $path\n";
 }
